@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Collective — Design with Soul. Scale with Intention.</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#2E3A47;--navy-deep:#1C2E38;--parchment:#E8E3D8;--parchment-light:#F4F1EC;
+  --sage:#C8C9BF;--sage-mid:#A3A89A;--stone:#A89880;--stone-light:#C4B49E;
+  --ink:#1A2028;--cream:#F9F6F0;--white:#FDFCFA;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.2rem 2rem;background:rgba(249,246,240,0.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(200,201,191,0.3);transition:padding 0.3s;}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:300;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink);}
+.nav-links{display:flex;gap:2rem;list-style:none;align-items:center;}
+.nav-links a{font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink);text-decoration:none;opacity:0.6;transition:opacity 0.2s;}
+.nav-links a:hover{opacity:1;}
+.nav-cta{padding:0.5rem 1.2rem;border:1px solid var(--navy);border-radius:2rem;color:var(--navy)!important;opacity:1!important;transition:all 0.25s!important;}
+.nav-cta:hover{background:var(--navy)!important;color:var(--white)!important;}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+.nav-hamburger span{display:block;width:22px;height:1.5px;background:var(--ink);transition:all 0.3s;}
+.nav-mobile-menu{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:var(--navy-deep);z-index:300;flex-direction:column;justify-content:center;align-items:center;gap:2.5rem;}
+.nav-mobile-menu.open{display:flex;}
+.nav-mobile-menu a{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;font-style:italic;color:var(--parchment);text-decoration:none;letter-spacing:0.05em;opacity:0.85;}
+.nav-mobile-menu a:hover{color:var(--stone-light);}
+.nav-mobile-close{position:absolute;top:1.5rem;right:2rem;font-size:1.5rem;color:var(--sage);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden;padding-top:64px;}
+.hero-left{background:var(--navy-deep);display:flex;flex-direction:column;justify-content:flex-end;padding:5rem 3.5rem 4.5rem;position:relative;overflow:hidden;}
+.hero-left-bg{position:absolute;inset:0;background:radial-gradient(ellipse 90% 70% at 30% 60%,rgba(168,152,128,0.12) 0%,transparent 70%),radial-gradient(ellipse 60% 40% at 80% 20%,rgba(200,201,191,0.07) 0%,transparent 60%);}
+.blob{position:absolute;border-radius:50%;filter:blur(50px);animation:float 14s ease-in-out infinite;}
+.blob-1{width:350px;height:350px;background:rgba(46,58,71,0.08);top:-60px;right:-60px;}
+.blob-2{width:250px;height:250px;background:rgba(168,152,128,0.15);bottom:0;left:10%;filter:blur(40px);animation-delay:-5s;}
+.blob-3{width:180px;height:180px;background:rgba(200,201,191,0.2);top:40%;right:20%;filter:blur(35px);animation-delay:-3s;}
+.hero-eyebrow{font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--stone-light);margin-bottom:1.8rem;opacity:0;animation:fadeUp 0.8s ease 0.4s forwards;position:relative;z-index:2;}
+.hero-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,4.5vw,5rem);font-weight:300;line-height:1.06;color:var(--parchment-light);margin-bottom:1.8rem;opacity:0;animation:fadeUp 0.9s ease 0.6s forwards;position:relative;z-index:2;}
+.hero-headline em{font-style:italic;color:var(--stone-light);}
+.hero-sub{font-size:0.87rem;line-height:1.9;color:var(--sage);max-width:420px;margin-bottom:2.5rem;opacity:0;animation:fadeUp 0.9s ease 0.8s forwards;position:relative;z-index:2;}
+.hero-actions{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;opacity:0;animation:fadeUp 0.9s ease 1s forwards;position:relative;z-index:2;}
+.btn-primary{padding:0.8rem 1.8rem;background:var(--stone);color:var(--white);font-family:'DM Sans',sans-serif;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;border:none;border-radius:2rem;cursor:pointer;transition:all 0.25s;}
+.btn-primary:hover{background:var(--stone-light);transform:translateY(-2px);}
+.btn-ghost-light{padding:0.8rem 1.6rem;background:transparent;color:var(--sage);font-family:'DM Sans',sans-serif;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(200,201,191,0.35);border-radius:2rem;cursor:pointer;transition:all 0.25s;}
+.btn-ghost-light:hover{border-color:var(--stone-light);color:var(--stone-light);}
+.hero-right{background:var(--parchment);position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:4rem 3rem;}
+.hero-right-img{position:absolute;inset:0;background:linear-gradient(160deg,rgba(200,201,191,0.3) 0%,rgba(232,227,216,0.6) 50%,rgba(249,246,240,0.4) 100%);}
+.hero-right-caption{position:relative;z-index:2;opacity:0;animation:fadeIn 1.2s ease 1.2s forwards;}
+.hero-right-caption p{font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-style:italic;font-weight:300;color:var(--navy);opacity:0.55;line-height:1.7;}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.5rem;z-index:10;opacity:0;animation:fadeIn 1s ease 1.6s forwards;}
+.scroll-hint span{font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--sage);opacity:0.6;}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--stone-light),transparent);animation:scrollPulse 2.5s ease infinite;}
+
+/* ── MARQUEE ── */
+.marquee-section{padding:1.6rem 0;background:var(--navy);overflow:hidden;border-top:1px solid rgba(200,201,191,0.1);}
+.marquee-track{display:flex;gap:2.5rem;animation:marquee 22s linear infinite;white-space:nowrap;}
+.marquee-item{font-family:'Cormorant Garamond',serif;font-size:0.9rem;font-style:italic;color:var(--sage);opacity:0.55;}
+.marquee-dot{color:var(--stone);opacity:0.5;}
+
+/* ── SHARED ── */
+.section-label{font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--stone);margin-bottom:1.4rem;display:block;}
+
+/* ── WHY ── */
+.why-section{padding:7rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:6rem;max-width:1280px;margin:0 auto;}
+.why-left h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,3.5vw,3.2rem);font-weight:300;line-height:1.2;color:var(--ink);margin-bottom:1.6rem;}
+.why-left h2 em{font-style:italic;color:var(--stone);}
+.why-left p{font-size:0.88rem;line-height:1.95;color:var(--ink);opacity:0.65;margin-bottom:1rem;}
+.belief-card{padding:1.6rem 1.8rem;background:var(--parchment);border-left:2px solid var(--stone);margin-bottom:1.1rem;transition:transform 0.3s;}
+.belief-card:hover{transform:translateX(5px);}
+.belief-number{font-family:'Cormorant Garamond',serif;font-size:0.68rem;letter-spacing:0.1em;color:var(--stone);margin-bottom:0.4rem;}
+.belief-card h3{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;color:var(--ink);margin-bottom:0.35rem;}
+.belief-card p{font-size:0.8rem;line-height:1.85;color:var(--ink);opacity:0.6;}
+
+/* ── HOW ── */
+.how-section{padding:7rem 4rem;background:var(--navy-deep);position:relative;overflow:hidden;}
+.how-section::before{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:rgba(168,152,128,0.06);top:-200px;right:-150px;filter:blur(100px);}
+.how-inner{max-width:1280px;margin:0 auto;}
+.how-header{margin-bottom:4rem;max-width:580px;}
+.how-header .section-label{color:var(--stone-light);}
+.how-header h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,3.5vw,3.2rem);font-weight:300;line-height:1.2;color:var(--parchment-light);}
+.how-header h2 em{font-style:italic;color:var(--stone-light);}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(200,201,191,0.1);}
+.how-card{padding:2.5rem 2rem;background:var(--navy-deep);transition:background 0.3s;}
+.how-card:hover{background:rgba(255,255,255,0.03);}
+.how-step{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:var(--stone);opacity:0.3;line-height:1;margin-bottom:1.2rem;}
+.how-card h3{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:400;color:var(--parchment);margin-bottom:0.8rem;}
+.how-card p{font-size:0.82rem;line-height:1.9;color:var(--sage);opacity:0.75;}
+
+/* ── BRIDGE ── */
+.bridge-section{padding:7rem 4rem;max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;}
+.bridge-text .section-label{color:var(--stone);}
+.bridge-text h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,3.2vw,3rem);font-weight:300;line-height:1.2;color:var(--ink);margin-bottom:1.4rem;}
+.bridge-text h2 em{font-style:italic;color:var(--stone);}
+.bridge-text p{font-size:0.88rem;line-height:1.95;color:var(--ink);opacity:0.65;margin-bottom:1rem;}
+.bridge-visual{height:320px;}
+
+/* ── WORKED WITH ── */
+.worked-section{padding:7rem 4rem;background:var(--parchment);}
+.worked-inner{max-width:1280px;margin:0 auto;}
+.worked-header{text-align:center;margin-bottom:4rem;}
+.worked-header h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:300;color:var(--ink);}
+.worked-header h2 em{font-style:italic;color:var(--stone);}
+.logo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;}
+.logo-slot{height:80px;background:rgba(46,58,71,0.05);display:flex;align-items:center;justify-content:center;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink);opacity:0.3;}
+
+/* ── WHAT WE LIKE ── */
+.like-section{padding:7rem 4rem;background:var(--cream);}
+.like-inner{max-width:1280px;margin:0 auto;}
+.like-header{margin-bottom:3.5rem;}
+.like-header h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:300;color:var(--ink);}
+.like-header h2 em{font-style:italic;color:var(--stone);}
+.like-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;}
+.like-card{display:flex;flex-direction:column;gap:0.9rem;}
+.like-card:nth-child(2){margin-top:3rem;}
+.like-card:nth-child(3){margin-top:1.5rem;}
+.like-img{display:flex;align-items:center;justify-content:center;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink);opacity:0.3;}
+.like-card p{font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-style:italic;color:var(--ink);opacity:0.65;line-height:1.7;}
+
+/* ── CTA + FORM ── */
+.cta-section{padding:9rem 4rem;background:var(--navy-deep);text-align:center;position:relative;overflow:hidden;}
+.cta-bg-text{position:absolute;font-family:'Cormorant Garamond',serif;font-size:20vw;font-weight:300;color:rgba(200,201,191,0.04);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;}
+.cta-inner{position:relative;z-index:2;max-width:660px;margin:0 auto;}
+.cta-inner .section-label{color:var(--stone-light);}
+.cta-inner h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,5vw,4.5rem);font-weight:300;line-height:1.1;color:var(--parchment-light);margin-bottom:1.3rem;}
+.cta-inner h2 em{font-style:italic;color:var(--stone-light);}
+.cta-inner>p{font-size:0.88rem;line-height:1.9;color:var(--sage);opacity:0.8;margin-bottom:3rem;}
+.contact-form{max-width:520px;margin:0 auto;text-align:left;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.form-group{display:flex;flex-direction:column;gap:0.4rem;margin-bottom:0.9rem;}
+.form-group label{font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--sage);opacity:0.7;}
+.form-group input,.form-group textarea,.form-group select{background:rgba(255,255,255,0.05);border:1px solid rgba(200,201,191,0.2);color:var(--parchment);font-family:'DM Sans',sans-serif;font-size:0.85rem;padding:0.75rem 1rem;outline:none;transition:border-color 0.2s;border-radius:0;width:100%;}
+.form-group input::placeholder,.form-group textarea::placeholder{color:rgba(200,201,191,0.3);}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:rgba(196,180,158,0.5);}
+.form-group select{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23C8C9BF' opacity='.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;}
+.form-group select option{background:var(--navy-deep);color:var(--parchment);}
+.form-group textarea{resize:vertical;min-height:90px;}
+.form-note{font-size:0.65rem;color:var(--sage);opacity:0.4;margin-top:0.6rem;text-align:center;letter-spacing:0.05em;}
+.submit-btn{width:100%;padding:1rem;background:var(--stone);color:var(--white);font-family:'DM Sans',sans-serif;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;transition:all 0.25s;margin-top:0.4rem;}
+.submit-btn:hover{background:var(--stone-light);}
+.form-success{display:none;text-align:center;padding:2rem;}
+
+/* ── FOOTER ── */
+footer{padding:2.5rem 4rem;border-top:1px solid rgba(200,201,191,0.15);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;background:var(--navy-deep);}
+footer .logo{font-family:'Cormorant Garamond',serif;font-size:0.9rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--sage);font-weight:300;opacity:0.7;}
+.footer-links{display:flex;gap:1.8rem;list-style:none;flex-wrap:wrap;}
+.footer-links a{font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--sage);opacity:0.4;text-decoration:none;transition:opacity 0.2s;}
+.footer-links a:hover{opacity:0.9;}
+footer .copyright{font-size:0.62rem;color:var(--sage);opacity:0.25;}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(20px,-15px) scale(1.04);}66%{transform:translate(-15px,10px) scale(0.97);}}
+@keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+@keyframes scrollPulse{0%{transform:scaleY(0);transform-origin:top;opacity:1;}50%{transform:scaleY(1);transform-origin:top;opacity:1;}100%{transform:scaleY(1);transform-origin:bottom;opacity:0;}}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.85s ease,transform 0.85s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ── TABLET (≤900px) ── */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;}
+  .hero-left{padding:7rem 3rem 4rem;min-height:70vh;}
+  .hero-right{min-height:40vh;padding:3rem;}
+  .why-section{grid-template-columns:1fr;gap:3.5rem;padding:6rem 3rem;}
+  .bridge-section{grid-template-columns:1fr;gap:3rem;padding:6rem 3rem;}
+  .bridge-visual{height:260px;}
+  .how-section{padding:6rem 3rem;}
+  .how-grid{grid-template-columns:1fr 1fr;}
+  .worked-section{padding:6rem 3rem;}
+  .logo-grid{grid-template-columns:repeat(2,1fr);}
+  .like-section{padding:6rem 3rem;}
+  .like-grid{grid-template-columns:1fr 1fr;}
+  .like-card:nth-child(3){display:none;}
+  .cta-section{padding:7rem 3rem;}
+  footer{padding:2rem 3rem;}
+  .nav-links .hide-tablet{display:none;}
+}
+
+/* ── MOBILE (≤600px) ── */
+@media(max-width:600px){
+  nav{padding:1rem 1.5rem;}
+  .nav-links{display:none;}
+  .nav-hamburger{display:flex;}
+  .hero{grid-template-columns:1fr;}
+  .hero-left{padding:6rem 1.8rem 3.5rem;min-height:80vh;}
+  .hero-headline{font-size:2.6rem;}
+  .hero-sub{font-size:0.85rem;max-width:100%;}
+  .hero-actions{flex-direction:column;align-items:flex-start;gap:0.8rem;}
+  .btn-primary,.btn-ghost-light{width:100%;text-align:center;}
+  .hero-right{min-height:45vw;padding:2rem 1.8rem;}
+  .scroll-hint{display:none;}
+  .marquee-section{padding:1.2rem 0;}
+  .marquee-item{font-size:0.82rem;}
+  .why-section{padding:5rem 1.8rem;gap:3rem;}
+  .why-left h2{font-size:2rem;}
+  .belief-card{padding:1.3rem 1.4rem;}
+  .how-section{padding:5rem 1.8rem;}
+  .how-grid{grid-template-columns:1fr;}
+  .how-card{padding:2rem 1.6rem;}
+  .how-header h2{font-size:2rem;}
+  .bridge-section{padding:5rem 1.8rem;gap:2.5rem;}
+  .bridge-visual{height:220px;}
+  .bridge-text h2{font-size:1.9rem;}
+  .worked-section{padding:5rem 1.8rem;}
+  .worked-header h2{font-size:1.9rem;}
+  .logo-grid{grid-template-columns:repeat(2,1fr);gap:0.8rem;}
+  .like-section{padding:5rem 1.8rem;}
+  .like-header h2{font-size:1.9rem;}
+  .like-grid{grid-template-columns:1fr;gap:2rem;}
+  .like-card:nth-child(2){margin-top:0;}
+  .like-card:nth-child(3){display:flex;margin-top:0;}
+  .cta-section{padding:6rem 1.8rem;}
+  .cta-inner h2{font-size:2.2rem;}
+  .cta-bg-text{font-size:28vw;}
+  .form-row{grid-template-columns:1fr;}
+  footer{padding:2rem 1.8rem;flex-direction:column;align-items:flex-start;gap:1.5rem;}
+  .footer-links{gap:1.2rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <div class="nav-logo">The Collective</div>
+  <ul class="nav-links">
+    <li class="hide-tablet"><a href="who-we-are.html">Who We Are</a></li>
+    <li class="hide-tablet"><a href="work.html">Work</a></li>
+    <li class="hide-tablet"><a href="what-we-like.html">What We Like</a></li>
+    <li><a href="#contact" class="nav-cta">Let's Talk</a></li>
+  </ul>
+  <div class="nav-hamburger" onclick="openMenu()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="nav-mobile-menu" id="mobile-menu">
+  <button class="nav-mobile-close" onclick="closeMenu()">✕</button>
+  <a href="who-we-are.html" onclick="closeMenu()">Who We Are</a>
+  <a href="work.html" onclick="closeMenu()">Work</a>
+  <a href="what-we-like.html" onclick="closeMenu()">What We Like</a>
+  <a href="#contact" onclick="closeMenu()">Let's Talk</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-left-bg"></div>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <p class="hero-eyebrow">Creative Collective · Human-Led · AI-Empowered</p>
+    <h1 class="hero-headline">Design with soul.<br><em>Scale with intention.</em></h1>
+    <p class="hero-sub">We are the human bridge between your vision and the tools of tomorrow — helping small businesses grow through design, strategy, and the thoughtful use of AI.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Start a Conversation</button>
+      <button class="btn-ghost-light" onclick="document.getElementById('who').scrollIntoView({behavior:'smooth'})">Our Story</button>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-right-img"></div>
+    <div class="blob blob-3" style="position:absolute;"></div>
+    <div class="hero-right-caption">
+      <p>Warm · Inviting · Sophisticated<br>Caring Flow · Raw &amp; Honest</p>
+    </div>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div style="overflow:hidden;">
+    <div class="marquee-track">
+      <span class="marquee-item">Brand Identity</span><span class="marquee-dot">&nbsp;·&nbsp;</span>
+      <span class="marquee-item">Creative Strategy</span><span class="marquee-dot">&nbsp;·&nbsp;</span>
+      <span class="marquee-item">AI-Assisted Design</span><span class="marquee-dot">&nbsp;·&nbsp;</span>
+      <span class="marquee-item">Digital Presence</span><span class="marquee-dot">&nbsp;·&nbsp;</span>
+      <span class="marquee-item">Visual Storytelling</span><span class="marquee-dot">&nbsp;·&nbsp;</span>
+      <span class="marquee-item">Growth Campaigns</span><span class="marquee-dot">&nbsp;·&nbsp;</span>
+      <span class="marquee-item">Brand Identity</span><span class="marquee-dot">&nbsp;·&nbsp;</span>
+      <span class="marquee-item">Creative Strategy</span><span class="marquee-dot">&nbsp;·&nbsp;</span>
+      <span class="marquee-item">AI-Assisted Design</span><span class="marquee-dot">&nbsp;·&nbsp;</span>
+      <span class="marquee-item">Digital Presence</span><span class="marquee-dot">&nbsp;·&nbsp;</span>
+      <span class="marquee-item">Visual Storytelling</span><span class="marquee-dot">&nbsp;·&nbsp;</span>
+      <span class="marquee-item">Growth Campaigns</span><span class="marquee-dot">&nbsp;·&nbsp;</span>
+    </div>
+  </div>
+</div>
+
+<!-- WHY -->
+<section id="who" style="background:var(--cream);">
+  <div class="why-section">
+    <div class="why-left reveal">
+      <span class="section-label">Our Why · Simon Sinek</span>
+      <h2>We deeply care about<br><em>creative wellbeing</em></h2>
+      <p>People don't buy what you do — they buy why you do it. Our why is simple: creativity is not a luxury. It is the lifeblood of every small business that dares to be different.</p>
+      <p>We exist to protect that spark. To give it space, structure, and the right tools to grow — without burning out the humans behind it.</p>
+    </div>
+    <div class="reveal" style="transition-delay:0.15s;">
+      <div class="belief-card">
+        <p class="belief-number">01</p>
+        <h3>Creativity needs care</h3>
+        <p>We treat your creative vision as something worth nurturing, not just executing. Your story is the strategy.</p>
+      </div>
+      <div class="belief-card">
+        <p class="belief-number">02</p>
+        <h3>Human first, always</h3>
+        <p>We are the conduit between your business and the tools of tomorrow — guiding, translating, advocating for you at every step.</p>
+      </div>
+      <div class="belief-card">
+        <p class="belief-number">03</p>
+        <h3>Small is powerful</h3>
+        <p>The best stories come from the smallest places. Independent businesses deserve world-class creative support.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW WE WORK -->
+<section class="how-section">
+  <div class="how-inner">
+    <div class="how-header reveal">
+      <span class="section-label">How We Work</span>
+      <h2>AI is a tool.<br>You are the <em>vision.</em></h2>
+    </div>
+    <div class="how-grid reveal" style="transition-delay:0.12s;">
+      <div class="how-card">
+        <div class="how-step">01</div>
+        <h3>We Listen First</h3>
+        <p>Before any design or strategy, we sit with you. We learn your business, your culture, your people. This is where everything meaningful starts.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-step">02</div>
+        <h3>We Translate</h3>
+        <p>We take your vision and map it to creative and AI-powered workflows — handling the complexity so you never feel intimidated by technology.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-step">03</div>
+        <h3>We Build Together</h3>
+        <p>Design, strategy, and execution — hand in hand. You stay in the driver's seat. We make sure you have the best roads to travel on.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRIDGE -->
+<section style="background:var(--cream);">
+  <div class="bridge-section">
+    <div class="bridge-visual reveal">
+      <svg viewBox="0 0 400 320" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+        <circle cx="200" cy="160" r="140" stroke="#C8C9BF" stroke-width="0.8" stroke-dasharray="3 9" opacity="0.4"/>
+        <circle cx="200" cy="160" r="95" stroke="#C8C9BF" stroke-width="0.8" stroke-dasharray="2 7" opacity="0.25"/>
+        <circle cx="68" cy="160" r="50" fill="#E8E3D8" stroke="#C4B49E" stroke-width="1"/>
+        <text x="68" y="153" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="10.5" fill="#1A2028" opacity="0.5" font-style="italic">your</text>
+        <text x="68" y="170" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="16" fill="#1A2028" font-weight="300">Vision</text>
+        <circle cx="200" cy="160" r="56" fill="rgba(46,58,71,0.07)"/>
+        <circle cx="200" cy="160" r="50" fill="#F4F1EC" stroke="#A89880" stroke-width="1.2"/>
+        <text x="200" y="152" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#A89880" letter-spacing="2.5">WE ARE</text>
+        <text x="200" y="168" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="17" fill="#1A2028" font-weight="300">The Bridge</text>
+        <text x="200" y="183" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#A89880" opacity="0.65">human conduit</text>
+        <circle cx="332" cy="160" r="50" fill="#2E3A47" stroke="#A3A89A" stroke-width="1" opacity="0.85"/>
+        <text x="332" y="153" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="10.5" fill="#C8C9BF" opacity="0.6" font-style="italic">powered</text>
+        <text x="332" y="170" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="16" fill="#E8E3D8" font-weight="300">by AI</text>
+        <line x1="118" y1="160" x2="138" y2="160" stroke="#A89880" stroke-width="1.2" opacity="0.45" stroke-dasharray="3 4"/>
+        <polygon points="138,155 145,160 138,165" fill="#A89880" opacity="0.45"/>
+        <line x1="250" y1="160" x2="270" y2="160" stroke="#A89880" stroke-width="1.2" opacity="0.45" stroke-dasharray="3 4"/>
+        <polygon points="250,155 243,160 250,165" fill="#A89880" opacity="0.45"/>
+        <text x="128" y="152" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#A89880" opacity="0.55">listens</text>
+        <text x="260" y="152" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#A89880" opacity="0.55">scales</text>
+      </svg>
+    </div>
+    <div class="bridge-text reveal" style="transition-delay:0.15s;">
+      <span class="section-label">AI + Humanity</span>
+      <h2>Scaling your business doesn't have to feel <em>intimidating</em></h2>
+      <p>AI is extraordinary — and it can feel overwhelming. We act as your human conduit, sitting thoughtfully between your needs and the technology that can serve them.</p>
+      <p>No cold prompts. No faceless automation. Just intentional humans who understand both the creative and the computational — and know exactly when to use each.</p>
+      <button class="btn-primary" style="margin-top:1.5rem;" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Work With Us</button>
+    </div>
+  </div>
+</section>
+
+<!-- WORKED WITH -->
+<section id="worked-with" class="worked-section">
+  <div class="worked-inner">
+    <div class="worked-header reveal">
+      <span class="section-label" style="display:block;text-align:center;">Who We've Worked With</span>
+      <h2>Brands we've had the <em>privilege of growing</em></h2>
+    </div>
+    <div class="logo-grid reveal" style="transition-delay:0.1s;">
+      <div class="logo-slot">Client Logo</div>
+      <div class="logo-slot">Client Logo</div>
+      <div class="logo-slot">Client Logo</div>
+      <div class="logo-slot">Client Logo</div>
+    </div>
+    <p style="text-align:center;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);opacity:0.3;margin-top:1.8rem;">
+      <a href="work.html" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(45,42,38,0.2);">View full client list →</a>
+    </p>
+  </div>
+</section>
+
+<!-- WHAT WE LIKE -->
+<section id="what-we-like" class="like-section">
+  <div class="like-inner">
+    <div class="like-header reveal">
+      <span class="section-label">What We Like</span>
+      <h2>Things that move us,<br><em>inspire us, feed us</em></h2>
+    </div>
+    <div class="like-grid reveal" style="transition-delay:0.1s;">
+      <div class="like-card">
+        <div class="like-img" style="height:240px;background:linear-gradient(135deg,var(--parchment),var(--sage));"></div>
+        <p>The texture of handmade things</p>
+      </div>
+      <div class="like-card">
+        <div class="like-img" style="height:280px;background:linear-gradient(135deg,var(--navy),var(--sage-mid));"></div>
+        <p>Architecture that breathes</p>
+      </div>
+      <div class="like-card">
+        <div class="like-img" style="height:260px;background:linear-gradient(135deg,var(--stone-light),var(--parchment));"></div>
+        <p>Quiet palettes that say everything</p>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);opacity:0.3;margin-top:2rem;">
+      <a href="what-we-like.html" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(45,42,38,0.2);">Explore the full editorial →</a>
+    </p>
+  </div>
+</section>
+
+<!-- CTA + CONTACT FORM -->
+<section class="cta-section" id="contact">
+  <div class="cta-bg-text">Let's Talk</div>
+  <div class="cta-inner reveal">
+    <span class="section-label">Ready When You Are</span>
+    <h2>Let's make something<br><em>worth remembering</em></h2>
+    <p>Whether you're starting from scratch or ready to scale, we'd love to hear where you're headed. No pitch, no pressure — just a real conversation about your work.</p>
+    <div class="contact-form" id="contact-form-wrap">
+      <div class="form-row">
+        <div class="form-group"><label>First Name</label><input type="text" id="f-first" placeholder="Jane"></div>
+        <div class="form-group"><label>Last Name</label><input type="text" id="f-last" placeholder="Smith"></div>
+      </div>
+      <div class="form-group"><label>Email</label><input type="email" id="f-email" placeholder="jane@yourbusiness.com"></div>
+      <div class="form-group"><label>Business Name</label><input type="text" id="f-biz" placeholder="Your Studio / Shop / Brand"></div>
+      <div class="form-group">
+        <label>What are you looking for?</label>
+        <select id="f-need">
+          <option value="" disabled selected>Select one</option>
+          <option>Brand Identity &amp; Design</option>
+          <option>Creative Strategy</option>
+          <option>AI-Assisted Workflow</option>
+          <option>Digital Presence &amp; Web</option>
+          <option>Something Else</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Tell us about your project</label><textarea id="f-msg" placeholder="Where are you now, and where do you want to go?"></textarea></div>
+      <button class="submit-btn" onclick="handleSubmit()">Send Message →</button>
+      <p class="form-note" id="form-note">Booking embed available soon · We'll be in touch within 48 hours</p>
+    </div>
+    <div class="form-success" id="form-success">
+      <p style="font-size:1.5rem;color:var(--stone-light);font-family:'Cormorant Garamond',serif;font-style:italic;margin-bottom:0.5rem;">Thank you.</p>
+      <p style="font-size:0.88rem;color:var(--sage);opacity:0.75;font-family:'DM Sans',sans-serif;">We'll be in touch within 48 hours.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">The Collective</div>
+  <ul class="footer-links">
+    <li><a href="who-we-are.html">Who We Are</a></li>
+    <li><a href="work.html">Work</a></li>
+    <li><a href="what-we-like.html">Inspiration</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <p class="copyright">© 2025 The Collective</p>
+</footer>
+
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting){el.target.classList.add('visible');obs.unobserve(el.target);}});},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+window.addEventListener('scroll',()=>{
+  const nav=document.getElementById('main-nav');
+  nav.style.padding=window.scrollY>60?'0.8rem 2rem':'1.2rem 2rem';
+});
+
+function openMenu(){document.getElementById('mobile-menu').classList.add('open');document.body.style.overflow='hidden';}
+function closeMenu(){document.getElementById('mobile-menu').classList.remove('open');document.body.style.overflow='';}
+
+function handleSubmit(){
+  const first=document.getElementById('f-first').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  const note=document.getElementById('form-note');
+  if(!first||!email){
+    note.textContent='Please fill in your name and email to continue.';
+    note.style.color='#C4B49E';
+    note.style.opacity='0.9';
+    return;
+  }
+  document.getElementById('contact-form-wrap').style.display='none';
+  document.getElementById('form-success').style.display='block';
+}
+</script>
+</body>
+</html>
